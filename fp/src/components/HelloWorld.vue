@@ -11,14 +11,43 @@
 
       = {{ result }}
     </div>
-    <div class="keyboard">
-      <button v-on:click="result = +operand1 + +operand2">+</button>
-      <button @click="result = operand1 - operand2">-</button>
-      <button @click="divide(operand1, operand2)">/</button>
-      <button @click="multiply">*</button>
-    </div>
+    <div class="errors" v-if="error">Ошибка: {{ error }}</div>
 
+    <div class="keyboard">
+      <button
+        v-for="operand in operands"
+        :key="operand"
+        @click="calculate(operand)"
+      >
+        {{ operand }}
+      </button>
+      <!--     <button @click="calculate('+')">+</button>
+      <button @click="calculate('-')">-</button>
+      <button @click="calculate('/')">/</button>
+      <button @click="calculate('*')">*</button> -->
+    </div>
+    <!--  <div class="arr">
+      <div v-for="(item, index) in myCollection" :key="index">
+        {{ index }} - {{ item }}
+      </div>
+    </div>
+ -->
     <!--  <input :value="operand1" @input="operand1 = $event.target.value" /> -->
+
+    <div>
+      <input
+        type="checkbox"
+        id="keybord"
+        :value="checkedName"
+        v-model="checkedNames"
+      />
+      <label for="keybord">Отобразить экранную клавиатуру</label>
+    </div>
+    <div class="checkbox-keybord">
+      <button v-for="checkedName in checkedNames" :key="checkedName">
+        {{ checkedName }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -35,24 +64,49 @@ export default {
   data() {
     return {
       message: "Hello Vue",
+      /*   myCollection: [1, 2, 3, 4, 5, 6], */
+      operands: ["+", "-", "/", "*"],
       operand1: 0,
       operand2: 0,
+      error: "",
       result: 0,
+      checkedNames: [],
     };
   },
   methods: {
-    doThat(str, event) {
-      console.log("click", str, event);
+    calculate(operation = "+") {
+      this.error = "";
+      switch (operation) {
+        case "+":
+          this.add();
+          break;
+        case "-":
+          this.substract();
+          break;
+        case "/":
+          this.divide();
+          break;
+        case "*":
+          this.multiply();
+          break;
+      }
     },
-    onValidate() {
-      console.log("validation true");
+    add() {
+      this.result = this.operand1 + this.operand2;
     },
-    divide(op1, op2) {
-      this.result = op1 / op2;
+    substract() {
+      this.result = this.operand1 - this.operand2;
+    },
+    divide() {
+      if (this.operand2 === 0) {
+        this.error = "На 0 делить нельзя!";
+        return;
+      } else {
+        this.result = this.operand1 / this.operand2;
+      }
     },
     multiply() {
-      const { operand1, operand2 } = this;
-      this.result = operand1 * operand2;
+      this.result = this.operand1 * this.operand2;
     },
   },
 };
