@@ -35,18 +35,19 @@
     <!--  <input :value="operand1" @input="operand1 = $event.target.value" /> -->
 
     <div>
-      <input
-        type="checkbox"
-        id="keybord"
-        :value="checkedName"
-        v-model="checkedNames"
-      />
+      <input type="checkbox" v-model="checkedNames" />
       <label for="keybord">Отобразить экранную клавиатуру</label>
     </div>
     <div class="checkbox-keybord">
       <button v-for="checkedName in checkedNames" :key="checkedName">
         {{ checkedName }}
       </button>
+    </div>
+    <div>
+      <input type="radio" id="one" value="Один" v-model="picked" />
+      <label for="one">Операнд 1</label>
+      <input type="radio" id="two" value="Два" v-model="picked" />
+      <label for="two">Операнд 2</label>
     </div>
   </div>
 </template>
@@ -70,7 +71,7 @@ export default {
       operand2: 0,
       error: "",
       result: 0,
-      checkedNames: [],
+      checkedNames: [1, 2, 3, 4, 5, 6],
     };
   },
   methods: {
